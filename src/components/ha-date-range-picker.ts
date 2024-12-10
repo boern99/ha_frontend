@@ -465,7 +465,7 @@ export class HaDateRangePicker extends LitElement {
 
   static get styles(): CSSResultGroup {
     return css`
-      ha-icon-button-prev, ha-icon-button {
+      ha-icon-button-prev {
         margin-right:8px;
       }
 
