@@ -301,7 +301,7 @@ export class HaPanelLogbook extends LitElement {
           margin-right: 16px;
           margin-inline-end: 16px;
           margin-inline-start: initial;
-          width: 100%;
+          max-width: 100%;
           direction: var(--direction);
         }
 
