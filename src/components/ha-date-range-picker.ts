@@ -2,7 +2,7 @@ import "@material/mwc-button/mwc-button";
 import "@material/mwc-list/mwc-list";
 import type { ActionDetail } from "@material/mwc-list/mwc-list-foundation";
 import "@material/mwc-list/mwc-list-item";
-import { mdiCalendar } from "@mdi/js";
+import { mdiCalendar, mdiMagnifyPlus, mdiMagnifyMinus } from "@mdi/js";
 import {
   addDays,
   addMonths,
@@ -34,7 +34,6 @@ import {
   formatShortDateTimeWithYear,
   formatShortDateTime,
 } from "../common/datetime/format_date_time";
-
 import { useAmPm } from "../common/datetime/use_am_pm";
 import type { HomeAssistant } from "../types";
 import "./date-range-picker";
@@ -252,6 +251,20 @@ export class HaDateRangePicker extends LitElement {
                   @click=${this._handleInputClick}
                   readonly
                 ></ha-textarea>
+                <ha-icon-button
+                  @click=${this._handleZoomOut}
+                  .label=${this.hass.localize(
+                    "ui.components.date-range-picker.zoom_out"
+                  )}
+                  .path=${mdiMagnifyMinus}
+                ></ha-icon-button>
+                <ha-icon-button
+                  @click=${this._handleZoomIn}
+                  .label=${this.hass.localize(
+                    "ui.components.date-range-picker.zoom_in"
+                  )}
+                  .path=${mdiMagnifyPlus}
+                ></ha-icon-button>
                 <ha-icon-button-prev
                   .label=${this.hass.localize("ui.common.previous")}
                   class="prev"
@@ -263,7 +276,7 @@ export class HaDateRangePicker extends LitElement {
                   class="next"
                   @click=${this._handleNext}
                 >
-                </ha-icon-button-next>`
+                </ha-icon-button-next> `
             : html`<ha-icon-button
                 .label=${this.hass.localize(
                   "ui.components.date-range-picker.select_date_range"
@@ -351,6 +364,52 @@ export class HaDateRangePicker extends LitElement {
           )
         ),
         subMilliseconds(roundToNearestHours(this.startDate), 1),
+      ];
+    }
+    const dateRangePicker = this._dateRangePicker;
+    dateRangePicker.clickRange(dateRange);
+    dateRangePicker.clickedApply();
+  }
+
+  private _handleZoomOut(): void {
+    const diff = differenceInMilliseconds(this.endDate, this.startDate) / 2;
+    let dateRange: [Date, Date];
+    dateRange = [
+      roundToNearestHours(subMilliseconds(this.startDate, diff)),
+      subMilliseconds(
+        roundToNearestHours(addMilliseconds(this.endDate, diff + 2)),
+        1
+      ),
+    ];
+
+    const dateRangePicker = this._dateRangePicker;
+    dateRangePicker.clickRange(dateRange);
+    dateRangePicker.clickedApply();
+  }
+
+  private _handleZoomIn(): void {
+    let dateRange: [Date, Date];
+    var diff =
+      differenceInMilliseconds(
+        this.endDate > new Date() ? new Date() : this.endDate,
+        this.startDate
+      ) / 4;
+    if (diff < 1 * 60 * 60 * 1000) {
+      var diff = 0;
+    }
+    if (this.endDate > new Date()) {
+      this.endDate = new Date();
+      dateRange = [
+        roundToNearestHours(addMilliseconds(this.startDate, diff)),
+        subMilliseconds(roundToNearestHours(new Date()), 1),
+      ];
+    } else {
+      dateRange = [
+        roundToNearestHours(addMilliseconds(this.startDate, diff)),
+        subMilliseconds(
+          roundToNearestHours(subMilliseconds(this.endDate, diff)),
+          1
+        ),
       ];
     }
     const dateRangePicker = this._dateRangePicker;
