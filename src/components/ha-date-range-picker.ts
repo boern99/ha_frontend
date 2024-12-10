@@ -373,8 +373,7 @@ export class HaDateRangePicker extends LitElement {
 
   private _handleZoomOut(): void {
     const diff = differenceInMilliseconds(this.endDate, this.startDate) / 2;
-    let dateRange: [Date, Date];
-    dateRange = [
+    const dateRange = [
       roundToNearestHours(subMilliseconds(this.startDate, diff)),
       subMilliseconds(
         roundToNearestHours(addMilliseconds(this.endDate, diff + 2)),
@@ -389,13 +388,13 @@ export class HaDateRangePicker extends LitElement {
 
   private _handleZoomIn(): void {
     let dateRange: [Date, Date];
-    var diff =
+    let diff =
       differenceInMilliseconds(
         this.endDate > new Date() ? new Date() : this.endDate,
         this.startDate
       ) / 4;
     if (diff < 1 * 60 * 60 * 1000) {
-      var diff = 0;
+      diff = 0;
     }
     if (this.endDate > new Date()) {
       this.endDate = new Date();
@@ -496,9 +495,10 @@ export class HaDateRangePicker extends LitElement {
         margin-right: 8px;
       }
       @media only screen and (max-width: 460px) {
-      ha-textarea {
-        width: 100%
-      }
+        ha-textarea {
+          width: 100%;
+          margin-right: 0px;
+        }
 
       @media only screen and (max-width: 800px) {
 
