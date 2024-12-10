@@ -466,7 +466,7 @@ export class HaDateRangePicker extends LitElement {
 
   static get styles(): CSSResultGroup {
     return css`
-      ha-icon-button-prev {
+      ha-icon-button-prev, ha-icon-button {
         margin-right:8px;
       }
 
@@ -501,6 +501,10 @@ export class HaDateRangePicker extends LitElement {
       }
 
       @media only screen and (max-width: 800px) {
+
+        ha-icon-button-prev, ha-icon-button {
+          margin-right:0px;
+        }
         .date-range-ranges {
           border-right: none;
           border-bottom: 1px solid var(--divider-color);
