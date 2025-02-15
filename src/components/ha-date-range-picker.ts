@@ -10,16 +10,15 @@ import {
   endOfMonth,
   endOfWeek,
   endOfYear,
-  isThisYear,
   startOfDay,
   startOfMonth,
   startOfWeek,
   startOfYear,
   differenceInMilliseconds,
-  roundToNearestHours,
   subMilliseconds,
   addMilliseconds,
   isToday,
+  isThisYear,
 } from "date-fns";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import type { PropertyValues, TemplateResult } from "lit";
@@ -183,6 +182,96 @@ export class HaDateRangePicker extends LitElement {
                 calcDate(today, endOfYear, this.hass.locale, this.hass.config, {
                   weekStartsOn,
                 }),
+              ],
+              [this.hass.localize(
+                "ui.components.date-range-picker.ranges.now-1h"
+              )]: [
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  1
+                ),
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  0
+                ),
+              ],
+              [this.hass.localize(
+                "ui.components.date-range-picker.ranges.now-12h"
+              )]: [
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  12
+                ),
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  0
+                ),
+              ],
+              [this.hass.localize(
+                "ui.components.date-range-picker.ranges.now-24h"
+              )]: [
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  24
+                ),
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  0
+                ),
+              ],
+              [this.hass.localize(
+                "ui.components.date-range-picker.ranges.now-7d"
+              )]: [
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  24 * 7
+                ),
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  0
+                ),
+              ],
+              [this.hass.localize(
+                "ui.components.date-range-picker.ranges.now-30d"
+              )]: [
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  24 * 30
+                ),
+                calcDate(
+                  today,
+                  subHours,
+                  this.hass.locale,
+                  this.hass.config,
+                  0
+                ),
               ],
             }
           : {}),
@@ -484,14 +573,23 @@ export class HaDateRangePicker extends LitElement {
       ha-textarea {
         width: 100%;
       }
-      .date-range-inputs {
-        gap: 0px;
-      }
     }
     @media only screen and (max-width: 800px) {
       .date-range-ranges {
         border-right: none;
         border-bottom: 1px solid var(--divider-color);
+      }
+    }
+
+    @media only screen and (max-height: 940px) and (max-width: 800px) {
+      .date-range-ranges {
+        overflow: auto;
+        max-height: calc(70vh - 330px);
+        min-height: 160px;
+      }
+
+      :host([header-position]) .date-range-ranges {
+        max-height: calc(90vh - 430px);
       }
     }
   `;
